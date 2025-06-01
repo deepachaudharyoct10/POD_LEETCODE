@@ -1,0 +1,93 @@
+Approach 1 (TLE)
+
+class Solution {
+
+    int find_ways(int n,int limit, int countchild,int val ){
+        if(countchild==3){
+            if(val==0){
+            return 1;
+            }
+            return 0;
+        }
+        
+
+        long long ways =0;
+
+        for(int i=0;i<=min(limit,n);i++){
+            ways += find_ways(n,limit,countchild+1,val-i);
+        }
+        return ways;
+    }
+public:
+    long long distributeCandies(int n, int limit) {
+        long long ans =find_ways(n,limit,0,n);
+        return ans;
+    }
+};
+
+
+
+
+Approach 2 O(n^3)
+class Solution {
+public:
+    long long distributeCandies(int n, int limit) {
+       long long ans = 0;
+       for(int i=0;i<=min(n,limit);i++){
+        for(int j=0;j<=min(n-i,limit);j++){
+            for(int k=0;k<=min(n-i-j,limit);k++){
+                if(i+j+k == n){
+                    ans++;
+                }
+            }
+        }
+       }
+
+       return ans;
+    }
+};
+
+
+Approach 3 O(n^2)
+
+class Solution {
+public:
+    long long distributeCandies(int n, int limit) {
+       long long ans = 0;
+       for(int i=0;i<=min(n,limit);i++){
+        for(int j=0;j<=min(n-i,limit);j++){
+                int k= min(n-i-j,limit);
+                if(i+j+k == n){
+                    ans++;
+                }
+            
+        }
+       }
+
+
+       return ans;
+    }
+};
+
+
+Approach 4 O(n) 
+
+class Solution {
+public:
+    long long distributeCandies(int n, int limit) {
+       long long ans = 0;
+       int mini= max(0,n-2*limit);
+        int maxi= min(n,limit);
+       for(int i=mini;i<=maxi;i++){
+         int val = n-i;
+          
+            int new_val = max(0,val-limit);
+            int max_val = min(val,limit);
+            ans += (max_val-new_val+1);
+
+
+       }
+
+       return ans;
+    }
+};
