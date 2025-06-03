@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int find_candy(int box, vector<int>& status, vector<int>& candies, 
+                   vector<vector<int>>& keys, vector<vector<int>>& containedBoxes,
+                   unordered_set<int>& vis, unordered_set<int>& openKeys) {
+        
+        if (vis.count(box)) {
+            return 0;
+        }
+
+        if (status[box] == 0) {
+            openKeys.insert(box);
+            return 0;
+        }
+
+        vis.insert(box);
+        int count = candies[box];  
+
+        for (auto it : keys[box]) {
+            status[it] = 1;
+            if (openKeys.count(it)) {
+                count += find_candy(it, status, candies, keys, containedBoxes, vis, openKeys);
+            }
+        }
+
+        for (auto it : containedBoxes[box]) {
+            count += find_candy(it, status, candies, keys, containedBoxes, vis, openKeys);
+        }
+
+        return count;
+    }
+
+    int maxCandies(vector<int>& status, vector<int>& candies, vector<vector<int>>& keys, 
+                   vector<vector<int>>& containedBoxes, vector<int>& initialBoxes) {
+
+        int candyCount = 0;
+        unordered_set<int> vis;
+        unordered_set<int> openKeys;
+
+        for (auto it : initialBoxes) {
+            candyCount += find_candy(it, status, candies, keys, containedBoxes, vis, openKeys);
+        }
+
+        return candyCount;
+    }
+};
