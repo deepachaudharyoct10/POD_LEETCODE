@@ -1,0 +1,34 @@
+public:
+
+    char find_val(char ch,vector<bool>&vis,unordered_map<int,list<int>>&adj,int& maxi ){
+        vis[ch-'a']= true;
+        char val = ch-'a';
+        if(val<maxi){
+            maxi = val;
+            
+        }
+        for(auto it: adj[ch]){
+            if(!vis[it-'a']){
+                find_val(it,vis,adj,maxi);
+            }
+        }
+        return (char)maxi+'a';
+    }
+    string smallestEquivalentString(string s1, string s2, string baseStr) {
+
+        unordered_map<int,list<int>>adj;
+
+        for(int i=0;i<s1.size();i++){
+            adj[s1[i]].push_back(s2[i]);
+            adj[s2[i]].push_back(s1[i]);
+        }
+
+        string ans ="";
+
+        for(int i=0;i<baseStr.size();i++){
+            vector<bool>vis(26,false);
+            int maxi = INT_MAX;
+            ans += find_val(baseStr[i],vis,adj,maxi);
+        }
+
+        return ans;
